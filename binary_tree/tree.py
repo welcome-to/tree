@@ -42,10 +42,24 @@ class Node(object):
              '      '*rec_deep + str((self.key,self.data)) + \
              ('' if self.lchild== None else ('\n'+self.lchild.printer(rec_deep=rec_deep+1)))
 
-
+'''
 spisok = [(10,0),(10,3),(7,6),(14,8),(16,3),(15,7)]
 tree = Node(0,data = 1)
 for i in range(len(spisok)):
     tree.add_child(node(spisok[i][0],data=spisok[i][1]))
 print(tree)
 print(tree.self_check())
+'''
+
+def load_tree(listik,tree=None,add = 0):
+    if tree == None:
+
+        tree = Node(len(listik)//2,data=listik[len(listik)//2])
+    else:
+        tree.add_child(Node(add+len(listik)//2,data=listik[len(listik)//2]))
+    if len(listik[:(len(listik)//2)])>=1:
+        load_tree(listik[:(len(listik)//2)],tree=tree,add=add)
+    if len(listik[(len(listik)//2):])>1:
+        load_tree(listik[(len(listik)//2)+1:],tree=tree,add=add+len(listik)//2+1)
+    return tree
+load_tree([i for i in range(100000)])
