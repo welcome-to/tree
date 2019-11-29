@@ -42,12 +42,18 @@ class Node(object):
             self.rchild.add_data_to_node(key,data)
 
     def strange_find(self,strange_key,add=0):
-        if self.under_left+add==strange_key:
-            return self.data
+        print(strange_key,add,self.under_left,bool(self.data),self.key)
+        if self.under_left+add+(1 if self.data !=None else 0)==strange_key:
+            if self.data !=None:
+                return self.data
+            elif self.under_left+add<strange_key:
+                return self.lchild.strange_find(strange_key,add=add)
+            else:
+                return self.rchild.strange_find(strange_key,add=add)
         elif self.under_left+add>strange_key:
             return self.lchild.strange_find(strange_key,add=add)
         else:
-            return self.rchild.strange_find(strange_key,add=add+self.under_left+1)
+            return self.rchild.strange_find(strange_key,add=add+self.under_left+(1 if self.data != None else 0))
 
     def get_data_of_node(self,key,current_l = 0):
         if key == current_l+self.under_left:
@@ -104,6 +110,8 @@ for i in range(len(asks)):
     while current_k<asks[i][1][0]:
         tree.add_data_to_node(listik1[current_k][0],listik1[current_k][1])
         current_k+=1
+    print(asks[i][1][1])
+    print(tree)
     asks[i][1].append(tree.strange_find(asks[i][1][1]-1))
 len(asks)
 for i in sorted(asks,key=lambda x:x[0]):
